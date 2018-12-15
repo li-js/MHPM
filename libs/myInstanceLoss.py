@@ -77,7 +77,7 @@ def myInstanceLoss(preds, labels,ignore_index=None):
 
         loss = loss + loss_var + loss_dist
 
-    loss = loss/batchsize  #+ 0*torch.sum(loss)
+    loss = loss/batchsize  #+ 0*torch.sum(preds) # use this term if the loss is 0.0. This is to stop the complain from autograd if there happens to be an image without any instances. In that case, no gradients would be calculated. By adding this extra term, the default gradient will be zero.
 
     return loss
 
@@ -141,7 +141,7 @@ def myInstanceLoss_group(preds, labels,ignore_index=None):
 
         loss = loss + loss_pull + loss_push
 
-    loss = loss/batchsize  #+ 0*torch.sum(loss)
+    loss = loss/batchsize  #+ 0*torch.sum(preds) # use this term if the loss is 0.0. This is to stop the complain from autograd if there happens to be an image without any instances. In that case, no gradients would be calculated. By adding this extra term, the default gradient will be zero.
 
     return loss
 
