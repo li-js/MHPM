@@ -5,7 +5,7 @@ import pickle
 from tqdm import tqdm, trange
 
 
-data_root = './'   #DATA_ROOT_DIR
+data_root = './data/'   #DATA_ROOT_DIR
 img_root = data_root + 'images/'
 ann_root = data_root + 'annotations/'
 global_seg_root = data_root + 'global_seg/'
