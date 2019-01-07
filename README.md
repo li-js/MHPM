@@ -1,6 +1,9 @@
 # MHPM
 The code for the paper Multi-Human Parsing Machines
 
+## Data
+The dataset used in this repo is MHP-v1, which can be downloaded from our [LV-MHP](https://lv-mhp.github.io/dataset) website. 
+
 ## Models
 Models for deployment are [here](https://drive.google.com/file/d/1x_aDKi-A0-C0cmmqIKH6ekhMITKwIFCr/view?usp=sharing)
 
