@@ -88,7 +88,7 @@ def clustering(tags, segs, bandwidth, perform_opening=True, use_torch=True):
             #print 'Max iteration reached during clusting!!'
             break
 
-        tags_masked = tags[unclustered.view(1, -1).expand_as(tags)].view(ndim, -1)
+        tags_masked = tags[unclustered.view(1, -1).expand_as(tags).bool()].view(ndim, -1)
 
         index = np.random.randint(0, tags_masked.size()[1])
         mean =  tags_masked[:, index:index+1]
@@ -105,7 +105,8 @@ def clustering(tags, segs, bandwidth, perform_opening=True, use_torch=True):
 
             th_mask = torch.lt(norm_map, bandwidth).view(-1)
 
-            iou = (instance_map.gt(0)*th_mask).sum()/(th_mask).sum()
+            # iou = (instance_map.gt(0)*th_mask).sum()/(th_mask).sum()
+            iou = (instance_map.gt(0)*th_mask).sum()/(th_mask).sum().numpy()
 
             if iou < 0.5:
                 th_mask = th_mask*unclustered
@@ -116,17 +117,17 @@ def clustering(tags, segs, bandwidth, perform_opening=True, use_torch=True):
                     else:
                         th_mask = erode_and_dilate_cv2(th_mask.view(h,w))
 
-                instance_map[th_mask.view(-1)] = l
+                instance_map[th_mask.view(-1).bool()] = l
                 l = l + 1
 
-            unclustered[th_mask.view(-1)] = 0
+            unclustered[th_mask.view(-1).bool()] = 0
             counter = 0
         else:
             counter = counter + 1
 
     tmp = torch.zeros(h*w).byte()
     l = 1
-    for j in xrange(1, torch.max(instance_map)+1):
+    for j in range(1, torch.max(instance_map)+1):
         if (instance_map.eq(j).sum()>50):
             tmp[instance_map.eq(j)] = l
             l = l + 1
